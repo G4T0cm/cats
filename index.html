@@ -71,49 +71,34 @@
       '9': '----.'
     };
 
-    // Invertir para traducción inversa
     const morseToChar = {};
     for (let char in morseCode) {
       morseToChar[morseCode[char]] = char;
     }
 
-    // Texto → Gatos reales
     function toGato() {
       const text = document.getElementById("inputText").value.toUpperCase();
       const translation = text.split("").map(ch => {
-        if (ch === " ") return "   "; // espacio entre palabras
+        if (ch === " ") return "   ";
         if (!morseCode[ch]) return "";
         return morseCode[ch]
-          .replace(/\./g, "🐱")   // punto
-          .replace(/-/g, "🐈");   // raya
+          .replace(/\./g, "🐱")
+          .replace(/-/g, "🐈");
       }).join(" ");
       document.getElementById("outputGato").value = translation;
     }
 
-function toTexto() {
-  const code = document.getElementById("inputGato").value.trim();
-  const words = code.split("   "); // separar palabras por 3 espacios
-  const translation = words.map(word => {
-    let letter = "";
-    let currentMorse = "";
-    
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i];
-      if (char === "🐱") currentMorse += ".";
-      else if (char === "🐈") currentMorse += "-";
-
-      // cada letra separada por 1 espacio, o al final de la palabra
-      if (word[i+1] === " " || i === word.length - 1) {
-        letter += morseToChar[currentMorse] || "";
-        currentMorse = "";
-      }
+    function toTexto() {
+      const code = document.getElementById("inputGato").value.trim();
+      const words = code.split("   "); // palabras separadas por 3 espacios
+      const translation = words.map(word => {
+        const letters = word.split(" "); // cada letra separada por 1 espacio
+        return letters.map(l => 
+          morseToChar[l.replace(/🐱/g,".").replace(/🐈/g,"-")] || ""
+        ).join("");
+      }).join(" ");
+      document.getElementById("outputText").value = translation;
     }
-
-    return letter;
-  }).join(" ");
-  
-  document.getElementById("outputText").value = translation;
-}
-</body>
   </script>
+</body>
 </html>
