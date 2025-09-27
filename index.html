@@ -92,19 +92,29 @@
 
     // Gatos reales → Texto
     function toTexto() {
-      const code = document.getElementById("inputGato").value.trim();
-      const words = code.split("   "); // separar por palabras
-      const translation = words.map(word => {
-        return word.split(" ").map(seq => {
-          if (!seq) return "";
-          const morse = seq
-            .replace(/🐈/g, "-")   // emoji para raya
-            .replace(/🐱/g, ".");  // emoji para punto
-          return morseToChar[morse] || "";
-        }).join("");
-      }).join(" ");
-      document.getElementById("outputText").value = translation;
+  const code = document.getElementById("inputGato").value.trim();
+  const words = code.split("   "); // separar palabras por 3 espacios
+  const translation = words.map(word => {
+    let letter = "";
+    let currentMorse = "";
+    
+    for (let i = 0; i < word.length; i++) {
+      const char = word[i];
+      if (char === "🐱") currentMorse += ".";
+      else if (char === "🐈") currentMorse += "-";
+
+      // cada letra separada por 1 espacio, o al final de la palabra
+      if (word[i+1] === " " || i === word.length - 1) {
+        letter += morseToChar[currentMorse] || "";
+        currentMorse = "";
+      }
     }
+
+    return letter;
+  }).join(" ");
+  
+  document.getElementById("outputText").value = translation;
+}
   </script>
 </body>
 </html>
