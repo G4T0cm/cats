@@ -40,7 +40,7 @@
   </style>
 </head>
 <body>
-  <h1>Traductor de Gato y Gato2</h1>
+  <h1>Traductor de Gato-Morse 🐱🐈</h1>
 
   <h3>Texto normal ➝ Gatos</h3>
   <textarea id="inputText" placeholder="Escribe aquí tu texto..."></textarea>
@@ -49,7 +49,7 @@
   <textarea id="outputGato" placeholder="Aquí aparecerá el código en gatos..."></textarea>
 
   <h3>Gatos ➝ Texto normal</h3>
-  <textarea id="inputGato" placeholder="Escribe aquí tu código con :cat: y :cat2:"></textarea>
+  <textarea id="inputGato" placeholder="Escribe aquí tu código con 🐱 y 🐈"></textarea>
   <br>
   <button onclick="toTexto()">Traducir ⬅︎</button>
   <textarea id="outputText" placeholder="Aquí aparecerá el texto traducido..."></textarea>
@@ -77,20 +77,20 @@
       morseToChar[morseCode[char]] = char;
     }
 
-    // Texto → Gatos
+    // Texto → Gatos reales
     function toGato() {
       const text = document.getElementById("inputText").value.toUpperCase();
       const translation = text.split("").map(ch => {
         if (ch === " ") return "   "; // espacio entre palabras
         if (!morseCode[ch]) return "";
         return morseCode[ch]
-          .replace(/\./g, ":cat:")
-          .replace(/-/g, ":cat2:");
+          .replace(/\./g, "🐱")   // punto
+          .replace(/-/g, "🐈");   // raya
       }).join(" ");
       document.getElementById("outputGato").value = translation;
     }
 
-    // Gatos → Texto
+    // Gatos reales → Texto
     function toTexto() {
       const code = document.getElementById("inputGato").value.trim();
       const words = code.split("   "); // separar por palabras
@@ -98,8 +98,8 @@
         return word.split(" ").map(seq => {
           if (!seq) return "";
           const morse = seq
-            .replace(/:cat2:/g, "-")
-            .replace(/:cat:/g, ".");
+            .replace(/🐈/g, "-")   // emoji para raya
+            .replace(/🐱/g, ".");  // emoji para punto
           return morseToChar[morse] || "";
         }).join("");
       }).join(" ");
